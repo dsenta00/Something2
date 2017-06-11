@@ -9,9 +9,9 @@
             <generator strategy="AUTO" />
         </id>
         <field name="name" type="string" length="100" />
-        <one-to-many field="tasks" target-entity="AppBundle\Entity\Task" mapped-by="toDoListId" />
-        <many-to-one field="userId" target-entity="AppBundle\Entity\User" inversed-by="toDoLists">
-            <join-column name="userId" referenced-column-name="id" unique="false"/>
+        <one-to-many field="tasks" target-entity="AppBundle\Entity\Task" mapped-by="toDoList" />
+        <many-to-one field="user" target-entity="AppBundle\Entity\User" inversed-by="toDoLists">
+            <join-column name="user" referenced-column-name="id" unique="false"/>
         </many-to-one>
     </entity>
 

@@ -2,5 +2,8 @@ to_do_lists:
     path:     /
     defaults: { _controller: AppBundle:ToDoList:index }
 to_do_list_add:
-    path:     /add-to-do-list
-    defaults: { _controller: AppBundle:ToDoList:addToDoList }
+    path:     /to-do-list/add
+    defaults: { _controller: AppBundle:ToDoList:new }
+to_do_list_update:
+    path:     /to-do-list/update/{id}
+    defaults: { _controller: AppBundle:ToDoList:update }

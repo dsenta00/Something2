@@ -8,7 +8,7 @@ class ToDoList
 {
     protected $id;
     protected $name;
-    protected $userId;
+    protected $user;
     protected $tasks;
 
     function __construct()
@@ -87,13 +87,13 @@ class ToDoList
     /**
      * Set userId
      *
-     * @param \AppBundle\Entity\User $userId
+     * @param \AppBundle\Entity\User $user
      *
      * @return ToDoList
      */
-    public function setUserId(\AppBundle\Entity\User $userId = null)
+    public function setUser(\AppBundle\Entity\User $user = null)
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
@@ -103,8 +103,8 @@ class ToDoList
      *
      * @return \AppBundle\Entity\User
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
     }
 }

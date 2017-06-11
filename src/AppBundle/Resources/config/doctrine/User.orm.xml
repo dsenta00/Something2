@@ -8,7 +8,7 @@
         <id name="id" type="integer">
             <generator strategy="AUTO" />
         </id>
-        <one-to-many field="toDoLists" target-entity="AppBundle\Entity\ToDoList" mapped-by="userId" />
+        <one-to-many field="toDoLists" target-entity="AppBundle\Entity\ToDoList" mapped-by="user" />
     </entity>
 
 </doctrine-mapping>

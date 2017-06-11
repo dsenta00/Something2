@@ -14,7 +14,7 @@ class Task
     protected $name;
     protected $priority;
     protected $deadline;
-    protected $toDoListId;
+    protected $toDoList;
 
     /**
      * Set name
@@ -101,13 +101,13 @@ class Task
     /**
      * Set toDoListId
      *
-     * @param \AppBundle\Entity\ToDoList $toDoListId
+     * @param \AppBundle\Entity\ToDoList $toDoList
      *
      * @return Task
      */
-    public function setToDoListId(\AppBundle\Entity\ToDoList $toDoListId = null)
+    public function setToDoList(\AppBundle\Entity\ToDoList $toDoList = null)
     {
-        $this->toDoListId = $toDoListId;
+        $this->toDoList = $toDoList;
 
         return $this;
     }
@@ -117,8 +117,8 @@ class Task
      *
      * @return \AppBundle\Entity\ToDoList
      */
-    public function getToDoListId()
+    public function getToDoList()
     {
-        return $this->toDoListId;
+        return $this->toDoList;
     }
 }

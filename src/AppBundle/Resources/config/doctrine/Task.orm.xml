@@ -11,8 +11,8 @@
         <field name="name" type="string" length="100" />
         <field name="priority" type="integer" />
         <field name="deadline" type="datetime" />
-        <many-to-one field="toDoListId" target-entity="AppBundle\Entity\ToDoList" inversed-by="tasks">
-            <join-column name="toDoListId" referenced-column-name="id" unique="false"/>
+        <many-to-one field="toDoList" target-entity="AppBundle\Entity\ToDoList" inversed-by="tasks">
+            <join-column name="toDoList" referenced-column-name="id" unique="false"/>
         </many-to-one>
     </entity>
 </doctrine-mapping>

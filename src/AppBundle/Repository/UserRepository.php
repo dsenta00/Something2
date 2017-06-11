@@ -1,4 +1,5 @@
 <?php
+namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -15,14 +16,5 @@ class UserRepository extends EntityRepository
     {
         parent::__construct($em, $class);
         $this->em = $em;
-    }
-
-    public function getAllTasksFromList($userId)
-    {
-        $this->em
-            ->from('User', 'usr')
-            ->select("usr")
-            ->where("usr.userId = :userId")
-            ->setParameter('userId', $userId);
     }
 }

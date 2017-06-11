@@ -14,8 +14,7 @@ class ToDoListType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('save', SubmitType::class)
-        ;
+            ->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -24,4 +23,5 @@ class ToDoListType extends AbstractType
             'data_class' => ToDoList::class,
         ));
     }
+
 }
