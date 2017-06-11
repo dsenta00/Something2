@@ -7,3 +7,6 @@ to_do_list_add:
 to_do_list_update:
     path:     /to-do-list/update/{id}
     defaults: { _controller: AppBundle:ToDoList:update }
+to_do_list_delete:
+    path:     /to-do-list/delete/{id}
+    defaults: { _controller: AppBundle:ToDoList:delete }
