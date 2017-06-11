@@ -16,6 +16,8 @@ class ToDoListController extends Controller
 {
 
     /**
+     * View all user lists action.
+     *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -28,6 +30,8 @@ class ToDoListController extends Controller
     }
 
     /**
+     * Add new user list action.
+     *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -52,6 +56,8 @@ class ToDoListController extends Controller
     }
 
     /**
+     * Update list name action.
+     *
      * @param Request $request
      * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -78,6 +84,13 @@ class ToDoListController extends Controller
         return $this->render(':toDoList:add.html.twig', array('form' => $form->createView()));
     }
 
+    /**
+     * Delete list action.
+     *
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
     public function deleteAction(Request $request, $id)
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
