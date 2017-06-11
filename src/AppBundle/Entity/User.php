@@ -13,12 +13,17 @@ use Doctrine\ORM\Mapping as ORM;
 class User extends BaseUser
 {
     protected $id;
-    protected $toDoLists;
+    private $toDoLists;
 
     public function __construct()
     {
         parent::__construct();
         $this->toDoLists = new ArrayCollection();
+    }
+
+    public function getId()
+    {
+        return parent::getId();
     }
 
     /**

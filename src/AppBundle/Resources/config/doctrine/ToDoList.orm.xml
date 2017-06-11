@@ -11,7 +11,7 @@
         <field name="name" type="string" length="100" />
         <one-to-many field="tasks" target-entity="AppBundle\Entity\Task" mapped-by="toDoListId" />
         <many-to-one field="userId" target-entity="AppBundle\Entity\User" inversed-by="toDoLists">
-            <join-column name="id" referenced-column-name="id" />
+            <join-column name="userId" referenced-column-name="id" unique="false"/>
         </many-to-one>
     </entity>
 

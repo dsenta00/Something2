@@ -8,9 +8,6 @@
 
 namespace AppBundle\Entity;
 
-/**
- * @IgnoreAnnotations("Task class represents user task in todo list")
- */
 class Task
 {
     protected $id;

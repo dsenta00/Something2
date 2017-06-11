@@ -4,9 +4,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * @IgnoreAnnotations("ToDoList class represents users to do list")
- */
 class ToDoList
 {
     protected $id;
