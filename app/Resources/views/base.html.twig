@@ -117,6 +117,9 @@
     </head>
     <body>
         {% block body %}{% endblock %}
+        {% block logoutblock %}
+            <button><a href="{{ path('fos_user_security_logout') }}">Logout</a></button>
+        {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

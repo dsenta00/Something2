@@ -8,6 +8,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\ToDoListType;
+use DateTime;
 
 class ToDoListController extends Controller
 {
@@ -42,6 +43,7 @@ class ToDoListController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $list = $form->getData();
             $list->setUser($this->getUser());
+            $list->setCreatedAt(new DateTime("now"));
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($list);
             $em->flush();

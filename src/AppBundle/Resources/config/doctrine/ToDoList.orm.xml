@@ -8,11 +8,15 @@
         <id name="id" type="integer">
             <generator strategy="AUTO" />
         </id>
+        <field name="createdAt" type="datetime" />
         <field name="name" type="string" length="100" />
-        <one-to-many field="tasks" target-entity="AppBundle\Entity\Task" mapped-by="toDoList" />
+        <one-to-many field="tasks" target-entity="AppBundle\Entity\Task" mapped-by="toDoList" >
+        <cascade>
+            <cascade-remove/>
+        </cascade>
+        </one-to-many>
         <many-to-one field="user" target-entity="AppBundle\Entity\User" inversed-by="toDoLists">
             <join-column name="user" referenced-column-name="id" unique="false"/>
         </many-to-one>
     </entity>
-
 </doctrine-mapping>

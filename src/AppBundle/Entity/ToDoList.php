@@ -9,6 +9,7 @@ class ToDoList
     protected $id;
     protected $name;
     protected $user;
+    protected $createdAt;
     protected $tasks;
 
     function __construct()
@@ -106,5 +107,29 @@ class ToDoList
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return ToDoList
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 }
