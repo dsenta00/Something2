@@ -12,6 +12,9 @@ class ToDoList
     protected $createdAt;
     protected $tasks;
 
+    public $countFinished = 0;
+    public $percentageDone = 0;
+
     function __construct()
     {
         $this->tasks = new ArrayCollection();

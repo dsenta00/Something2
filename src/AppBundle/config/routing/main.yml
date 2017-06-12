@@ -23,3 +23,6 @@ task_update:
 task_delete:
     path:     /task/delete/{id}
     defaults: { _controller: AppBundle:Task:delete }
+task_mark_as_done:
+    path:     /task/mark-as-done/{id}
+    defaults: { _controller: AppBundle:Task:markTaskAsDone }

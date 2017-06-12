@@ -24,6 +24,17 @@ class ToDoListController extends Controller
         $user = $this->getUser();
         $lists = $user->getToDoLists() ? $user->getToDoLists() : [];
 
+        $taskRepository = $this->container->get('doctrine.orm.entity_manager')
+            ->getRepository('AppBundle:Task');
+
+
+        foreach ($lists as $list) {
+            $list->countFinished = $taskRepository->getNumberOfFinishedTasksInAList($list->getId());
+            if (count($list->getTasks()) != 0) {
+                $list->percentageDone = 100 * (round(($list->countFinished / count($list->getTasks())), 2));
+            }
+        }
+
         return $this->render(':toDoList:index.html.twig', array('lists' => $lists));
     }
 
@@ -96,16 +107,14 @@ class ToDoListController extends Controller
 
         $listRepository = $em->getRepository('AppBundle:ToDoList');
 
-        try
-        {
+        try {
             $list = $listRepository->findOneById($id);
             $name = $list->getName();
             $em->remove($list);
             $em->flush();
-            return new Response("List with name " . $name . " is erased");
-        }
-        catch(Exception $e)
-        {
+
+            return new Response("List with name ".$name." is erased");
+        } catch (Exception $e) {
             return new Response("Oooops something went wrong! :P", -1);
         }
 

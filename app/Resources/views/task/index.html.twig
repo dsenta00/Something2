@@ -15,7 +15,12 @@
                         <a class="taskDeleteButton" href="{{ path('task_delete', {'id': task.id}) }}">Remove
                             task</a>
                     </button>
+                    <button>
+                        <a class="taskMarkAsDoneButton" href="{{ path('task_mark_as_done', {'id': task.id}) }}">Mark
+                            done</a>
+                    </button>
                     <ul>
+                        <li> <span>Done:     </span><span id="doneStatus">{{ task.getDoneString }} </span></li>
                         <li> <span>Priority: </span>{{ task.getPriorityString }} </li>
                         <li> <span>Deadline: </span>{{ task.deadline|date("m/d/Y") }} </li>
                     </ul>
@@ -25,7 +30,6 @@
                 {% endfor %}
             </ol>
         </div>
-
         <div id="container">
             <button><a href="{{ path('task_add', {'listId' : list.id}) }}">Add new task</a></button>
             <button><a href="{{  path('to_do_lists') }}">Go back</a></button>
@@ -59,7 +63,28 @@
                 })
             }
 
+            function markTaskAsDone() {
+                var $taskButton = $('.taskMarkAsDoneButton');
+                $taskButton.on('click', function (event) {
+                    event.preventDefault();
+                    var url = $(this).attr('href');
+                    var $button = $(this);
+                    $.ajax({
+                        url: url,
+                        success: function (response) {
+                            console.log($button.parent());
+                            console.log($button.parent().find('#doneStatus'));
+                            $button.parent().parent().find('#doneStatus').html(response);
+                        },
+                        error: function (response) {
+                            $button.parent().find('span').html(response.message);
+                        }
+                    });
+                })
+            }
+
             deleteTask();
+            markTaskAsDone();
         });
 
     </script>

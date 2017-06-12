@@ -102,7 +102,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Delete list action.
+     * Delete task action.
      *
      * @param Request $request
      * @param $id
@@ -121,6 +121,31 @@ class TaskController extends Controller
             $em->flush();
 
             return new Response("Task with name ".$name." is erased");
+        } catch (Exception $e) {
+            return new Response("Oooops something went wrong! :P", -1);
+        }
+
+    }
+    /**
+     * Mark list action.
+     *
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function markTaskAsDoneAction(Request $request, $id)
+    {
+        $em = $this->container->get('doctrine.orm.entity_manager');
+
+        $taskRepository = $em->getRepository('AppBundle:Task');
+
+        try {
+            $task = $taskRepository->findOneById($id);
+            $task->setDone(1);
+            $em->persist($task);
+            $em->flush();
+
+            return new Response($task->getDoneString());
         } catch (Exception $e) {
             return new Response("Oooops something went wrong! :P", -1);
         }

@@ -15,6 +15,7 @@ class Task
     protected $priority;
     protected $deadline;
     protected $toDoList;
+    protected $done = false;
 
     /**
      * Set name
@@ -139,5 +140,39 @@ class Task
     public function getToDoList()
     {
         return $this->toDoList;
+    }
+
+    /**
+     * Set done
+     *
+     * @param boolean $done
+     *
+     * @return Task
+     */
+    public function setDone($done)
+    {
+        $this->done = $done;
+
+        return $this;
+    }
+
+    /**
+     * Get done
+     *
+     * @return boolean
+     */
+    public function getDone()
+    {
+        return $this->done;
+    }
+
+    /**
+     * Get done as string ("Yes or No").
+     *
+     * @return string
+     */
+    public function getDoneString()
+    {
+        return $this->done ? "Yes" : "No";
     }
 }
