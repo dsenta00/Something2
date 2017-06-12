@@ -21,8 +21,14 @@ class ToDoListController extends Controller
      */
     public function indexAction(Request $request)
     {
+
+        $orderBy = $request->get('orderBy');
         $user = $this->getUser();
-        $lists = $user->getToDoLists() ? $user->getToDoLists() : [];
+
+        $listRepository = $this->container->get('doctrine.orm.entity_manager')
+            ->getRepository('AppBundle:ToDoList');
+
+        $lists = $listRepository->findAllByUserListsOrderedBy($user->getId(), $orderBy);
 
         $taskRepository = $this->container->get('doctrine.orm.entity_manager')
             ->getRepository('AppBundle:Task');

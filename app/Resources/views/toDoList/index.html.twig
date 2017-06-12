@@ -34,6 +34,9 @@
 
         <div id="container">
             <button><a href="{{ path('to_do_list_add') }}">Add new list</a></button>
+            <br><p>Order by:</p>
+            <button><a href="{{ path('to_do_lists',{'orderBy':'name'}) }}">Name</a></button>
+            <button><a href="{{ path('to_do_lists',{'orderBy':'createdAt'}) }}">Date of creation</a></button>
         </div>
     </div>
 {% endblock %}

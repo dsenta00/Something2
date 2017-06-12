@@ -27,4 +27,26 @@ class ToDoListRepository extends EntityRepository
         parent::__construct($em, $class);
         $this->em = $em;
     }
+
+    /**
+     * Get ordered list
+     *
+     * @param $userId
+     * @param bool $orderBy
+     * @return array
+     */
+    public function findAllByUserListsOrderedBy($userId, $orderBy = false)
+    {
+        $qb = $this->em->createQueryBuilder();
+
+        $qb
+            ->select('tdl')
+            ->from('AppBundle:ToDoList', 'tdl')
+            ->where('tdl.user = '.$userId);
+        if ($orderBy) {
+            $qb->orderBy('tdl.'.$orderBy, 'ASC');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }
