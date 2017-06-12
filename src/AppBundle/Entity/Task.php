@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Helper\TaskHelper;
+
 /**
  * Class Task
  * @package AppBundle\Entity
@@ -24,7 +26,7 @@ class Task
     protected $priority;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      */
     protected $deadline;
 
@@ -37,6 +39,11 @@ class Task
      * @var bool
      */
     protected $done = false;
+
+    /**
+     * @var int
+     */
+    public $dateDiffDays = 0;
 
     /**
      * Set name

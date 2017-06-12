@@ -8,6 +8,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\TaskType;
+use AppBundle\Helper\TaskHelper;
 
 class TaskController extends Controller
 {
@@ -26,6 +27,9 @@ class TaskController extends Controller
             ->getRepository('AppBundle:ToDoList')
             ->findOneById($listId);
 
+        foreach($list->getTasks() as $task){
+            $task->dateDiffDays = TaskHelper::countDaysAccordingTo($task->getDeadline());
+        }
         return $this->render(':task:index.html.twig', array('list' => $list));
     }
 

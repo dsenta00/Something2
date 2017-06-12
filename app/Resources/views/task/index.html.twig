@@ -23,6 +23,7 @@
                         <li> <span>Done:     </span><span id="doneStatus">{{ task.getDoneString }} </span></li>
                         <li> <span>Priority: </span>{{ task.getPriorityString }} </li>
                         <li> <span>Deadline: </span>{{ task.deadline|date("m/d/Y") }} </li>
+                        <li> <span>Days left: </span>{{ task.dateDiffDays }} </li>
                     </ul>
                 </li>
                 {% else %}
