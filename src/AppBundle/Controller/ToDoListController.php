@@ -10,6 +10,10 @@ use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\ToDoListType;
 use DateTime;
 
+/**
+ * Class ToDoListController
+ * @package AppBundle\Controller
+ */
 class ToDoListController extends Controller
 {
 
@@ -21,14 +25,13 @@ class ToDoListController extends Controller
      */
     public function indexAction(Request $request)
     {
-
         $orderBy = $request->get('orderBy');
         $user = $this->getUser();
 
         $listRepository = $this->container->get('doctrine.orm.entity_manager')
             ->getRepository('AppBundle:ToDoList');
 
-        $lists = $listRepository->findAllByUserListsOrderedBy($user->getId(), $orderBy);
+        $lists = $listRepository->getAllUserListsOrderedBy($user->getId(), $orderBy);
 
         $taskRepository = $this->container->get('doctrine.orm.entity_manager')
             ->getRepository('AppBundle:Task');

@@ -22,15 +22,22 @@ class TaskController extends Controller
      */
     public function indexAction(Request $request, $listId)
     {
-        $list = $this->container
-            ->get('doctrine.orm.entity_manager')
+        $orderBy = $request->get('orderBy');
+
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $taskRepository = $em->getRepository('AppBundle:Task');
+
+        $tasks = $taskRepository->getAllTasksOrderedBy($listId, $orderBy);
+
+        $list = $em
             ->getRepository('AppBundle:ToDoList')
             ->findOneById($listId);
 
-        foreach($list->getTasks() as $task){
+        foreach($tasks as $task){
             $task->dateDiffDays = TaskHelper::countDaysAccordingTo($task->getDeadline());
         }
-        return $this->render(':task:index.html.twig', array('list' => $list));
+        return $this->render(':task:index.html.twig', array('tasks' => $tasks, 'list' => $list));
     }
 
     /**

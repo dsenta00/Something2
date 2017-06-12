@@ -46,4 +46,26 @@ class TaskRepository extends EntityRepository
             ->andWhere('t.done = true');
         return count($qb->getQuery()->getResult());
     }
+
+    /**
+     * Get all tasks ordered.
+     *
+     * @param $listId
+     * @param bool $orderBy
+     * @return array
+     */
+    public function getAllTasksOrderedBy($listId, $orderBy = false)
+    {
+        $qb = $this->em->createQueryBuilder();
+
+        $qb
+            ->select('t')
+            ->from('AppBundle:Task', 't')
+            ->where('t.toDoList = '.$listId);
+        if ($orderBy) {
+            $qb->orderBy('t.'.$orderBy, 'ASC');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

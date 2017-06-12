@@ -29,13 +29,13 @@ class ToDoListRepository extends EntityRepository
     }
 
     /**
-     * Get ordered list
+     * Get all user lists ordered.
      *
      * @param $userId
      * @param bool $orderBy
      * @return array
      */
-    public function findAllByUserListsOrderedBy($userId, $orderBy = false)
+    public function getAllUserListsOrderedBy($userId, $orderBy = false)
     {
         $qb = $this->em->createQueryBuilder();
 
