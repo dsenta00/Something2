@@ -1,20 +1,41 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: danijelamikulicic
- * Date: 09/06/2017
- * Time: 23:39
- */
 
 namespace AppBundle\Entity;
 
+/**
+ * Class Task
+ * @package AppBundle\Entity
+ */
 class Task
 {
+    /**
+     * @var int
+     */
     protected $id;
+
+    /**
+     * @var string
+     */
     protected $name;
+
+    /**
+     * @var int
+     */
     protected $priority;
+
+    /**
+     * @var DateTime
+     */
     protected $deadline;
+
+    /**
+     * @var ToDoList
+     */
     protected $toDoList;
+
+    /**
+     * @var bool
+     */
     protected $done = false;
 
     /**

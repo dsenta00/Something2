@@ -5,6 +5,10 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 
+/**
+ * Class UserRepository
+ * @package AppBundle\Repository
+ */
 class UserRepository extends EntityRepository
 {
     /**
@@ -12,6 +16,11 @@ class UserRepository extends EntityRepository
      */
     private $em;
 
+    /**
+     * UserRepository constructor.
+     * @param EntityManager $em
+     * @param ClassMetadata $class
+     */
     public function __construct(EntityManager $em, ClassMetadata $class)
     {
         parent::__construct($em, $class);

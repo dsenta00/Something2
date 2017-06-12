@@ -4,17 +4,50 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+/**
+ * Class ToDoList
+ * @package AppBundle\Entity
+ */
 class ToDoList
 {
+    /**
+     * @var int
+     */
     protected $id;
+
+    /**
+     * @var string
+     */
     protected $name;
+
+    /**
+     * @var User
+     */
     protected $user;
+
+    /**
+     * @var \DateTime
+     */
     protected $createdAt;
+
+    /**
+     * @var ArrayCollection
+     */
     protected $tasks;
 
+    /**
+     * @var int
+     */
     public $countFinished = 0;
+
+    /**
+     * @var int
+     */
     public $percentageDone = 0;
 
+    /**
+     * ToDoList constructor.
+     */
     function __construct()
     {
         $this->tasks = new ArrayCollection();

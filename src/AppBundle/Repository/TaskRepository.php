@@ -6,6 +6,10 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 
+/**
+ * Class TaskRepository
+ * @package AppBundle\Repository
+ */
 class TaskRepository extends EntityRepository
 {
     /**
@@ -13,6 +17,12 @@ class TaskRepository extends EntityRepository
      */
     private $em;
 
+    /**
+     * TaskRepository constructor.
+     *
+     * @param EntityManager $em
+     * @param ClassMetadata $class
+     */
     public function __construct(EntityManager $em, ClassMetadata $class)
     {
         parent::__construct($em, $class);
@@ -20,8 +30,10 @@ class TaskRepository extends EntityRepository
     }
 
     /**
+     * Get number of finished tasks in a list.
+     *
      * @param $listId
-     * @return \Doctrine\ORM\Query
+     * @return number of finished tasks in a list.
      */
     public function getNumberOfFinishedTasksInAList($listId)
     {

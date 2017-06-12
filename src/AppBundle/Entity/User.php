@@ -15,12 +15,18 @@ class User extends BaseUser
     protected $id;
     private $toDoLists;
 
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
         parent::__construct();
         $this->toDoLists = new ArrayCollection();
     }
 
+    /**
+     * @return mixed
+     */
     public function getId()
     {
         return parent::getId();

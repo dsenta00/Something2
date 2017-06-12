@@ -8,6 +8,10 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\ToDoList;
 
+/**
+ * Class ToDoListType.
+ * @package AppBundle\Form
+ */
 class ToDoListType extends AbstractType
 {
     /**

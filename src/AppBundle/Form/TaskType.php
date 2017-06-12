@@ -10,6 +10,10 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\Task;
 
+/**
+ * Class TaskType.
+ * @package AppBundle\Form
+ */
 class TaskType extends AbstractType
 {
     /**
