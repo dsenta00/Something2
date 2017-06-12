@@ -65,6 +65,25 @@ class Task
     }
 
     /**
+     * Get priority as string.
+     *
+     * @return string
+     */
+    public function getPriorityString()
+    {
+        switch ($this->priority) {
+            case 0:
+                return "Low";
+            case 1:
+                return "Normal";
+            case 2:
+                return "High";
+            default:
+                return "Undefined priority!";
+        }
+    }
+
+    /**
      * Set deadline
      *
      * @param \DateTime $deadline

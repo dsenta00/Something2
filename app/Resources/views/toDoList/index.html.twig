@@ -15,9 +15,13 @@
                             <a class="toDoListDeleteButton" href="{{ path('to_do_list_delete', {'id': list.id}) }}">Remove
                                 list</a>
                         </button>
+                        <button>
+                            <a class="viewListButton" href="{{ path('tasks', {'listId': list.id}) }}">View
+                                list tasks</a>
+                        </button>
                     </li>
                 {% else %}
-                    You dont have any lists yet.
+                    You don't have any lists yet.
                 {% endfor %}
             </ul>
         </div>

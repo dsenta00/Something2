@@ -10,3 +10,16 @@ to_do_list_update:
 to_do_list_delete:
     path:     /to-do-list/delete/{id}
     defaults: { _controller: AppBundle:ToDoList:delete }
+
+tasks:
+    path:     /tasks/{listId}
+    defaults: { _controller: AppBundle:Task:index }
+task_add:
+    path:     /task/add/{listId}
+    defaults: { _controller: AppBundle:Task:new }
+task_update:
+    path:     /task/update/{id}
+    defaults: { _controller: AppBundle:Task:update }
+task_delete:
+    path:     /task/delete/{id}
+    defaults: { _controller: AppBundle:Task:delete }
