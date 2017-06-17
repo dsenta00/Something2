@@ -19,13 +19,13 @@
                             <a class="viewListButton" href="{{ path('tasks', {'listId': list.id}) }}">View
                                 list tasks</a>
                         </button>
+                        <ul>
+                            <li> <span>Created At: </span> {{list.createdAt|date("m/d/Y")}} </li>
+                            <li> <span>Number of tasks: </span> {{list.tasks|length}} </li>
+                            <li> <span>Number of finished tasks: </span> {{list.countFinished}} </li>
+                            <li> <span>Finished (%): </span> {{list.percentageDone}} % </li>
+                        </ul>
                     </li>
-                    <ul>
-                        <li> <span>Created At: </span> {{list.createdAt|date("m/d/Y")}} </li>
-                        <li> <span>Number of tasks: </span> {{list.tasks|length}} </li>
-                        <li> <span>Number of finished tasks: </span> {{list.countFinished}} </li>
-                        <li> <span>Finished (%): </span> {{list.percentageDone}} % </li>
-                    </ul>
                 {% else %}
                     You don't have any lists yet.
                 {% endfor %}
