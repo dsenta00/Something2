@@ -34,8 +34,10 @@ class ToDoListType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => ToDoList::class,
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => ToDoList::class,
+            )
+        );
     }
 }

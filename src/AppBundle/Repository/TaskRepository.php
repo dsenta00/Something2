@@ -39,11 +39,12 @@ class TaskRepository extends EntityRepository
     {
         $qb = $this->em->createQueryBuilder();
 
-         $qb
+        $qb
             ->select('t.id')
             ->from('AppBundle:Task', 't')
-            ->where('t.toDoList = ' . $listId)
+            ->where('t.toDoList = '.$listId)
             ->andWhere('t.done = true');
+
         return count($qb->getQuery()->getResult());
     }
 

@@ -20,9 +20,10 @@ class TaskHelper
     {
         $now = new DateTime("now");
         $diff = $dateTime->diff($now)->days;
-        if($dateTime < $now){
-            $diff = $diff*(-1);
+        if ($dateTime < $now) {
+            $diff = $diff * (-1);
         }
+
         return $diff;
     }
 }

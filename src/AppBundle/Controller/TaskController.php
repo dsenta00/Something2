@@ -34,9 +34,10 @@ class TaskController extends Controller
             ->getRepository('AppBundle:ToDoList')
             ->findOneById($listId);
 
-        foreach($tasks as $task){
+        foreach ($tasks as $task) {
             $task->dateDiffDays = TaskHelper::countDaysAccordingTo($task->getDeadline());
         }
+
         return $this->render(':task:index.html.twig', array('tasks' => $tasks, 'list' => $list));
     }
 
@@ -137,6 +138,7 @@ class TaskController extends Controller
         }
 
     }
+
     /**
      * Mark list action.
      *
