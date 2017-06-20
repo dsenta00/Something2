@@ -8,11 +8,13 @@ class TaskControllerTest extends WebTestCase
 {
     public function testIndex()
     {
-        $client = static::createClient();
-
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'username',
+            'PHP_AUTH_PW'   => 'pa$$word',
+        ));
         $crawler = $client->request('GET', '/');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('Welcome to Symfony', $crawler->filter('#container h1')->text());
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertContains('You don\'t have any lists yet.', $crawler->filter('#container')->text());
     }
 }

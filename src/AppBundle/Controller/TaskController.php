@@ -12,7 +12,6 @@ use AppBundle\Helper\TaskHelper;
 
 class TaskController extends Controller
 {
-
     /**
      * View all user lists action.
      *
