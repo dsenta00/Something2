@@ -58,11 +58,11 @@ class LoadToDoListData implements FixtureInterface, ContainerAwareInterface, Ord
      */
     private function addToDoList(ObjectManager $manager, $userEmail, $listName)
     {
-        $user = $this->userRepository->findOneByEmail($userEmail);
-
         if ($this->listRepository->findOneByName($listName)) {
             return;
         }
+
+        $user = $this->userRepository->findOneByEmail($userEmail);
 
         if ($user instanceof User) {
             $toDoList = new ToDoList();

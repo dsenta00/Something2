@@ -67,8 +67,14 @@ class LoadTaskData implements FixtureInterface, ContainerAwareInterface, Ordered
      * @param $done
      * @param $priority
      */
-    private function addTask(ObjectManager $manager, $listName, $taskName, $deadline, $done, $priority)
-    {
+    private function addTask(
+        ObjectManager $manager,
+        string $listName,
+        string $taskName,
+        \DateTime $deadline,
+        bool $done,
+        int $priority
+    ) {
         if ($this->taskRepository->findOneByName($taskName)) {
             return;
         }

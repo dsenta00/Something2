@@ -110,6 +110,7 @@ class ToDoListControllerTest extends WebTestCase
 
         $client->click($link);
         $crawler = $client->request('GET', '/');
+
         $response = $client->getResponse();
         $this->assertSame(200, $response->getStatusCode());
 
@@ -122,5 +123,17 @@ class ToDoListControllerTest extends WebTestCase
             'moj mali dan kada je dani na poslu',
             $crawler->filter('#container')->text()
         );
+
+        $link = $crawler
+            ->filter('a:contains("Remove list")')
+            ->eq(0)
+            ->link();
+
+        $client->click($link);
+        $crawler = $client->request('GET', '/');
+
+        $response = $client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertContains('You don\'t have any lists yet.', $crawler->filter('#container')->text());
     }
 }

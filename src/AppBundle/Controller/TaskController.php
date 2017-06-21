@@ -10,6 +10,11 @@ use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\TaskType;
 use AppBundle\Helper\TaskHelper;
 
+/**
+ * Class TaskController.
+ *
+ * @package AppBundle\Controller
+ */
 class TaskController extends Controller
 {
     /**
