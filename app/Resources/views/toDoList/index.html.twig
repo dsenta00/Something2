@@ -12,12 +12,10 @@
                             <span id="messageError"></span>
                         </button>
                         <button>
-                            <a class="toDoListDeleteButton" href="{{ path('to_do_list_delete', {'id': list.id}) }}">Remove
-                                list</a>
+                            <a class="toDoListDeleteButton" href="{{ path('to_do_list_delete', {'id': list.id}) }}">Remove list</a>
                         </button>
                         <button>
-                            <a class="viewListButton" href="{{ path('tasks', {'listId': list.id}) }}">View
-                                list tasks</a>
+                            <a class="viewListButton" href="{{ path('tasks', {'listId': list.id}) }}">View list tasks</a>
                         </button>
                         <ul>
                             <li> <span>Created At: </span> {{list.createdAt|date("m/d/Y")}} </li>

@@ -53,7 +53,7 @@ class LoadToDoListData implements FixtureInterface, ContainerAwareInterface, Ord
             $toDoList = new ToDoList();
             $toDoList->setName($listName);
             $toDoList->setUser($user);
-            $toDoList->setCreatedAt(new \DateTime('now'));
+            $toDoList->setCreatedAt(new \DateTime('2000-01-01'));
 
             $manager->persist($toDoList);
             $manager->flush();
