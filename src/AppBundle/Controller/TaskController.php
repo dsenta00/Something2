@@ -28,7 +28,7 @@ class TaskController extends Controller
     {
         $orderBy = $request->get('orderBy');
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $taskRepository = $em->getRepository('AppBundle:Task');
 
@@ -56,7 +56,7 @@ class TaskController extends Controller
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $list = $em
             ->getRepository('AppBundle:ToDoList')
             ->findOneById($listId);
@@ -91,7 +91,7 @@ class TaskController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $task = $em
             ->getRepository('AppBundle:Task')
             ->findOneById($id);

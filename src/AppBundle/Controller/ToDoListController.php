@@ -64,7 +64,7 @@ class ToDoListController extends Controller
             $list = $form->getData();
             $list->setUser($this->getUser());
             $list->setCreatedAt(new DateTime("now"));
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->persist($list);
             $em->flush();
 
@@ -93,7 +93,7 @@ class ToDoListController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $list = $form->getData();
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->persist($list);
             $em->flush();
 
