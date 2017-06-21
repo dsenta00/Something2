@@ -10,6 +10,7 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Task;
 use AppBundle\Entity\ToDoList;
+use AppBundle\Repository\TaskRepository;
 use AppBundle\Repository\ToDoListRepository;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -34,17 +35,31 @@ class LoadTaskData implements FixtureInterface, ContainerAwareInterface, Ordered
     private $toDoListRepository;
 
     /**
+     * @var TaskRepository
+     */
+    private $taskRepository;
+
+    /**
+     * Set container.
+     *
      * @param ContainerInterface|null $container
      */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+
         $this->toDoListRepository = $container
             ->get('doctrine.orm.default_entity_manager')
             ->getRepository('AppBundle:ToDoList');
+
+        $this->taskRepository = $container
+            ->get('doctrine.orm.default_entity_manager')
+            ->getRepository('AppBundle:Task');
     }
 
     /**
+     * Add task.
+     *
      * @param ObjectManager $manager
      * @param $listName
      * @param $taskName
@@ -54,6 +69,10 @@ class LoadTaskData implements FixtureInterface, ContainerAwareInterface, Ordered
      */
     private function addTask(ObjectManager $manager, $listName, $taskName, $deadline, $done, $priority)
     {
+        if ($this->taskRepository->findOneByName($taskName)) {
+            return;
+        }
+
         $toDoList = $this->toDoListRepository->findOneByName($listName);
 
         if ($toDoList instanceof ToDoList) {

@@ -33,9 +33,9 @@ class ToDoListController extends Controller
 
         $lists = $listRepository->getAllUserListsOrderedBy($user->getId(), $orderBy);
 
-        $taskRepository = $this->container->get('doctrine.orm.entity_manager')
+        $taskRepository = $this->container
+            ->get('doctrine.orm.entity_manager')
             ->getRepository('AppBundle:Task');
-
 
         foreach ($lists as $list) {
             $list->countFinished = $taskRepository->getNumberOfFinishedTasksInAList($list->getId());

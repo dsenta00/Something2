@@ -21,11 +21,20 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface, Ordered
     private $container;
 
     /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
      * @param ContainerInterface|null $container
      */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+        $this->userRepository = $container
+            ->get('doctrine.orm.default_entity_manager')
+            ->getRepository('AppBundle:User');
+
     }
 
     /**
@@ -37,6 +46,10 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface, Ordered
      */
     private function addUser($userName, $password, $email)
     {
+        if ($this->userRepository->findOneByEmail($email)) {
+            return;
+        }
+
         $userManager = $this->container->get('fos_user.user_manager');
 
         $user = $userManager->createUser();

@@ -2,6 +2,9 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\DataFixtures\ORM\LoadTaskData;
+use AppBundle\DataFixtures\ORM\LoadToDoListData;
+use AppBundle\DataFixtures\ORM\LoadUserData;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -24,6 +27,30 @@ class TaskControllerTest extends WebTestCase
     private $client;
 
     /**
+     * Load fixtures.
+     *
+     * @param Client $client - the client.
+     */
+    private function loadFixtures(Client $client)
+    {
+        $container = $client->getContainer();
+        $doctrine = $container->get('doctrine');
+        $entityManager = $doctrine->getManager();
+
+        $fixture = new LoadUserData();
+        $fixture->setContainer(static::$kernel->getContainer());
+        $fixture->load($entityManager);
+
+        $fixture = new LoadToDoListData();
+        $fixture->setContainer(static::$kernel->getContainer());
+        $fixture->load($entityManager);
+
+        $fixture = new LoadTaskData();
+        $fixture->setContainer(static::$kernel->getContainer());
+        $fixture->load($entityManager);
+    }
+
+    /**
      * Prerequisite for test.
      */
     public function setUp()
@@ -36,9 +63,8 @@ class TaskControllerTest extends WebTestCase
             )
         );
 
-        $this->crawler = $this->client->request('GET', '/');
-        $response = $this->client->getResponse();
-        $this->assertSame(200, $response->getStatusCode());
+        $this->loadFixtures($this->client);
+        $this->crawler = $this->client->request('GET', '/?orderBy=name');
     }
 
     /**
@@ -48,7 +74,7 @@ class TaskControllerTest extends WebTestCase
     {
         $link = $this->crawler
             ->filter('a:contains("View list tasks")')
-            ->eq(0)
+            ->eq(1)
             ->link();
 
         $this->crawler = $this->client->click($link);
@@ -68,7 +94,7 @@ class TaskControllerTest extends WebTestCase
     {
         $link = $this->crawler
             ->filter('a:contains("View list tasks")')
-            ->eq(1)
+            ->eq(0)
             ->link();
 
         $this->crawler = $this->client->click($link);

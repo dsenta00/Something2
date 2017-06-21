@@ -5,6 +5,7 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\ToDoList;
 use AppBundle\Entity\User;
 use AppBundle\Repository\ToDoListRepository;
+use AppBundle\Repository\UserRepository;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -23,9 +24,14 @@ class LoadToDoListData implements FixtureInterface, ContainerAwareInterface, Ord
     private $container;
 
     /**
-     * @var ToDoListRepository
+     * @var UserRepository
      */
     private $userRepository;
+
+    /**
+     * @var ToDoListRepository
+     */
+    private $listRepository;
 
     /**
      * @param ContainerInterface|null $container
@@ -33,9 +39,14 @@ class LoadToDoListData implements FixtureInterface, ContainerAwareInterface, Ord
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+
         $this->userRepository = $container
             ->get('doctrine.orm.default_entity_manager')
             ->getRepository('AppBundle:User');
+
+        $this->listRepository = $this->container
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('AppBundle:ToDoList');
     }
 
     /**
@@ -48,8 +59,12 @@ class LoadToDoListData implements FixtureInterface, ContainerAwareInterface, Ord
     private function addToDoList(ObjectManager $manager, $userEmail, $listName)
     {
         $user = $this->userRepository->findOneByEmail($userEmail);
-        if ($user instanceof User) {
 
+        if ($this->listRepository->findOneByName($listName)) {
+            return;
+        }
+
+        if ($user instanceof User) {
             $toDoList = new ToDoList();
             $toDoList->setName($listName);
             $toDoList->setUser($user);
@@ -62,6 +77,7 @@ class LoadToDoListData implements FixtureInterface, ContainerAwareInterface, Ord
 
     /**
      * Load ToDoList data.
+     *
      * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager)
@@ -70,6 +86,11 @@ class LoadToDoListData implements FixtureInterface, ContainerAwareInterface, Ord
         $this->addToDoList($manager, 'cup.diridup@zeko.com', 'kakilica raspored');
     }
 
+    /**
+     * Get order.
+     *
+     * @return int
+     */
     public function getOrder()
     {
         return 2;
