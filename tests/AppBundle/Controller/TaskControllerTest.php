@@ -2,9 +2,11 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\DataFixtures\ORM\LoadTaskData;
+use AppBundle\DataFixtures\ORM\LoadToDoListData;
+use AppBundle\DataFixtures\ORM\LoadUserData;
 use AppBundle\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
-use SplStack;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -27,32 +29,10 @@ class TaskControllerTest extends WebTestCase
     private $client;
 
     /**
-     * @var SplStack
-     */
-    private $fixtures;
-
-    /**
-     * TaskControllerTest constructor.
-     */
-    public function __construct()
-    {
-        $this->fixtures = new SplStack();
-    }
-
-    /**
-     * Load fixture.
+     * Delete records.
      *
      * @param ObjectManager $manager
-     * @param $className
      */
-    private function loadFixture(ObjectManager $manager, $className)
-    {
-        $fixture = new $className($manager, static::$kernel->getContainer());
-        $fixture->load($manager);
-        $this->fixtures->push($fixture);
-    }
-
-
     public function deleteRecords(ObjectManager $manager)
     {
         $userRepository = $manager->getRepository('AppBundle:User');
@@ -65,17 +45,6 @@ class TaskControllerTest extends WebTestCase
         }
 
         $manager->flush();
-    }
-
-    /**
-     * Tear down test.
-     */
-    public function tearDown()
-    {
-        while ($this->fixtures->count() > 0)
-        {
-            $this->fixtures->pop();
-        }
     }
 
     /**
@@ -97,9 +66,12 @@ class TaskControllerTest extends WebTestCase
 
         $this->deleteRecords($manager);
 
-        $this->loadFixture($manager, 'AppBundle\DataFixtures\ORM\LoadUserData');
-        $this->loadFixture($manager, 'AppBundle\DataFixtures\ORM\LoadToDoListData');
-        $this->loadFixture($manager, 'AppBundle\DataFixtures\ORM\LoadTaskData');
+        $fixture = new LoadUserData($manager, static::$kernel->getContainer());
+        $fixture->load($manager);
+        $fixture = new LoadToDoListData($manager, static::$kernel->getContainer());
+        $fixture->load($manager);
+        $fixture = new LoadTaskData($manager, static::$kernel->getContainer());
+        $fixture->load($manager);
 
         $this->crawler = $this->client->request('GET', '/?orderBy=name');
     }

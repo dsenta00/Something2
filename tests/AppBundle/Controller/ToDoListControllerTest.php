@@ -2,9 +2,11 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\DataFixtures\ORM\LoadTaskData;
+use AppBundle\DataFixtures\ORM\LoadToDoListData;
+use AppBundle\DataFixtures\ORM\LoadUserData;
 use AppBundle\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
-use SplStack;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -17,48 +19,24 @@ use Symfony\Bundle\FrameworkBundle\Client;
 class ToDoListControllerTest extends WebTestCase
 {
     /**
-     * @var SplStack
-     */
-    private $fixtures;
-
-    /**
-     * TaskControllerTest constructor.
-     */
-    public function __construct()
-    {
-        $this->fixtures = new SplStack();
-    }
-
-    /**
-     * Load fixture.
-     *
-     * @param ObjectManager $manager
-     * @param $className
-     */
-    private function loadFixture(ObjectManager $manager, $className)
-    {
-        $fixture = new $className($manager, static::$kernel->getContainer());
-        $fixture->load($manager);
-        $this->fixtures->push($fixture);
-    }
-
-    /**
      * Load fixtures.
      *
      * @param Client $client - the client.
      */
     private function loadFixtures(Client $client)
     {
-
         $container = $client->getContainer();
         $doctrine = $container->get('doctrine');
         $manager = $doctrine->getManager();
 
         $this->deleteRecords($manager);
 
-        $this->loadFixture($manager, 'AppBundle\DataFixtures\ORM\LoadUserData');
-        $this->loadFixture($manager, 'AppBundle\DataFixtures\ORM\LoadToDoListData');
-        $this->loadFixture($manager, 'AppBundle\DataFixtures\ORM\LoadTaskData');
+        $fixture = new LoadUserData($manager, static::$kernel->getContainer());
+        $fixture->load($manager);
+        $fixture = new LoadToDoListData($manager, static::$kernel->getContainer());
+        $fixture->load($manager);
+        $fixture = new LoadTaskData($manager, static::$kernel->getContainer());
+        $fixture->load($manager);
     }
 
     public function deleteRecords(ObjectManager $manager)
@@ -73,17 +51,6 @@ class ToDoListControllerTest extends WebTestCase
         }
 
         $manager->flush();
-    }
-
-    /**
-     * Tear down.
-     */
-    public function tearDown()
-    {
-        while ($this->fixtures->count() > 0)
-        {
-            $this->fixtures->pop();
-        }
     }
 
     /**
