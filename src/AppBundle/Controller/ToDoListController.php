@@ -16,7 +16,6 @@ use DateTime;
  */
 class ToDoListController extends Controller
 {
-
     /**
      * View all user lists action.
      *

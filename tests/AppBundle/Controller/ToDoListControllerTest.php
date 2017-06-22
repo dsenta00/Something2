@@ -39,6 +39,11 @@ class ToDoListControllerTest extends WebTestCase
         $fixture->load($manager);
     }
 
+    /**
+     * Delete records.
+     *
+     * @param ObjectManager $manager
+     */
     public function deleteRecords(ObjectManager $manager)
     {
         $userRepository = $manager->getRepository('AppBundle:User');
@@ -159,6 +164,105 @@ class ToDoListControllerTest extends WebTestCase
         $this->assertSame(200, $response->getStatusCode());
         $this->assertContains(
             'You don\'t have any lists yet.',
+            $crawler->filter('#container')->text()
+        );
+    }
+
+    /**
+     * Test update action.
+     */
+    public function testUpdateAction()
+    {
+        $client = static::createClient(
+            array(),
+            array(
+                'PHP_AUTH_USER' => 'ćup',
+                'PHP_AUTH_PW' => 'diridup',
+            )
+        );
+
+        $this->loadFixtures($client);
+
+        $container = $client->getContainer();
+        $doctrine = $container->get('doctrine');
+        $toDoListRepository = $doctrine->getManager()->getRepository('AppBundle:ToDoList');
+        $list =  $toDoListRepository->findOneByName('moj mali dan kada je dani na poslu');
+
+        $crawler = $client->request('GET', '/to-do-list/update/'.$list->getId());
+        $response = $client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+
+        $this->assertContains(
+            'Name',
+            $crawler->filter('#to_do_list div label')->text()
+        );
+
+        $saveButton = $crawler->selectButton('Save');
+        $form = $saveButton->form(array(
+            'to_do_list[name]' => 'moja mala večer kada se dani vrati s posla',
+        ));
+        $client->submit($form);
+        $crawler = $client->followRedirect();
+
+        $this->assertContains(
+            'moja mala večer kada se dani vrati s posla',
+            $crawler->filter('#container')->text()
+        );
+
+        $this->assertContains(
+            'kakilica raspored',
+            $crawler->filter('#container')->text()
+        );
+    }
+
+    /**
+     * Test New Action.
+     */
+    public function testNewAction()
+    {
+        $client = static::createClient(
+            array(),
+            array(
+                'PHP_AUTH_USER' => 'ćup',
+                'PHP_AUTH_PW' => 'diridup',
+            )
+        );
+
+        $this->loadFixtures($client);
+
+        $container = $client->getContainer();
+        $doctrine = $container->get('doctrine');
+        $toDoListRepository = $doctrine->getManager()->getRepository('AppBundle:ToDoList');
+        $list =  $toDoListRepository->findOneByName('moj mali dan kada je dani na poslu');
+
+        $crawler = $client->request('GET', '/to-do-list/add');
+        $response = $client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+
+        $this->assertContains(
+            'Name',
+            $crawler->filter('#to_do_list div label')->text()
+        );
+
+        $saveButton = $crawler->selectButton('Save');
+        $form = $saveButton->form(array(
+            'to_do_list[name]' => 'moja mala večer kada se dani vrati s posla',
+        ));
+        $client->submit($form);
+        $crawler = $client->followRedirect();
+
+        $this->assertContains(
+            'moj mali dan kada je dani na poslu',
+            $crawler->filter('#container')->text()
+        );
+
+        $this->assertContains(
+            'moja mala večer kada se dani vrati s posla',
+            $crawler->filter('#container')->text()
+        );
+
+        $this->assertContains(
+            'kakilica raspored',
             $crawler->filter('#container')->text()
         );
     }
