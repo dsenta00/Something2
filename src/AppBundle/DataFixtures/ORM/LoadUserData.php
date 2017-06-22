@@ -2,12 +2,10 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use AppBundle\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 /**
  * Class LoadUserData.
@@ -46,10 +44,6 @@ class LoadUserData extends LoadData
      */
     private function addUser(UserManager $userManager, $userName, $password, $email)
     {
-        if ($userManager->findUserByEmail($email)) {
-            return;
-        }
-
         $user = $userManager->createUser();
         $user->setUsername($userName);
         $user->setEmail($email);
