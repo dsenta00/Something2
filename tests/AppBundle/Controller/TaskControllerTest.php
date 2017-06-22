@@ -33,18 +33,50 @@ class TaskControllerTest extends WebTestCase
      *
      * @param ObjectManager $manager
      */
-    public function deleteRecords(ObjectManager $manager)
+    private function deleteRecords(ObjectManager $manager)
     {
         $userRepository = $manager->getRepository('AppBundle:User');
         $users = $userRepository->findAll();
 
-        foreach($users as $user){
-            if($user instanceof User){
+        foreach ($users as $user) {
+            if ($user instanceof User) {
                 $manager->remove($user);
             }
         }
 
         $manager->flush();
+    }
+
+    /**
+     * Get ToDoList id.
+     *
+     * @param string $name
+     * @return int list ID if exist otherwise return null.
+     */
+    private function getToDoListId(string $name)
+    {
+        $container = $this->client->getContainer();
+        $doctrine = $container->get('doctrine');
+        $toDoListRepository = $doctrine->getManager()->getRepository('AppBundle:ToDoList');
+        $list = $toDoListRepository->findOneByName($name);
+
+        return ($list) ? $list->getId() : -1;
+    }
+
+    /**
+     * Get Task id.
+     *
+     * @param string $name
+     * @return int
+     */
+    private function getTaskId(string $name)
+    {
+        $container = $this->client->getContainer();
+        $doctrine = $container->get('doctrine');
+        $toDoListRepository = $doctrine->getManager()->getRepository('AppBundle:Task');
+        $task = $toDoListRepository->findOneByName($name);
+
+        return ($task) ? $task->getId() : -1;
     }
 
     /**
@@ -113,6 +145,134 @@ class TaskControllerTest extends WebTestCase
 
         $this->assertContains(
             'po duji',
+            $this->crawler->filter('#container')->text()
+        );
+
+        $this->assertContains(
+            'pored duje',
+            $this->crawler->filter('#container')->text()
+        );
+
+        $this->assertContains(
+            'možda u svoj wc',
+            $this->crawler->filter('#container')->text()
+        );
+    }
+
+    /**
+     * Test remove action.
+     */
+    public function testRemove()
+    {
+        $link = $this->crawler
+            ->filter('a:contains("View list tasks")')
+            ->eq(0)
+            ->link();
+
+        $this->crawler = $this->client->click($link);
+
+        $link = $this->crawler
+            ->filter('a:contains("Remove task")')
+            ->eq(0)
+            ->link();
+
+        $this->client->click($link);
+        $this->crawler = $this->client->request('GET', '/tasks/'.$this->getToDoListId('kakilica raspored'));
+        $response = $this->client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+
+        $this->assertNotContains(
+            'po duji',
+            $this->crawler->filter('#container')->text()
+        );
+
+        $this->assertContains(
+            'pored duje',
+            $this->crawler->filter('#container')->text()
+        );
+
+        $this->assertContains(
+            'možda u svoj wc',
+            $this->crawler->filter('#container')->text()
+        );
+
+        $link = $this->crawler
+            ->filter('a:contains("Remove task")')
+            ->eq(0)
+            ->link();
+
+        $this->client->click($link);
+        $this->crawler = $this->client->request('GET', '/tasks/'.$this->getToDoListId('kakilica raspored'));
+        $response = $this->client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+
+        $this->assertNotContains(
+            'po duji',
+            $this->crawler->filter('#container')->text()
+        );
+
+        $this->assertNotContains(
+            'pored duje',
+            $this->crawler->filter('#container')->text()
+        );
+
+        $this->assertContains(
+            'možda u svoj wc',
+            $this->crawler->filter('#container')->text()
+        );
+
+        $link = $this->crawler
+            ->filter('a:contains("Remove task")')
+            ->eq(0)
+            ->link();
+
+        $this->client->click($link);
+        $this->crawler = $this->client->request('GET', '/tasks/'.$this->getToDoListId('kakilica raspored'));
+        $response = $this->client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+
+        $this->assertContains(
+            'You don\'t have any tasks yet.',
+            $this->crawler->filter('#container')->text()
+        );
+    }
+
+    /**
+     * Test update action.
+     */
+    public function testUpdateAction()
+    {
+        $link = $this->crawler
+            ->filter('a:contains("View list tasks")')
+            ->eq(0)
+            ->link();
+
+        $this->crawler = $this->client->click($link);
+
+        $this->crawler = $this->client->request('GET', '/task/update/'.$this->getTaskId('po duji'));
+        $response = $this->client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+
+        $this->assertContains(
+            'Name',
+            $this->crawler->filter('#task div label')->text()
+        );
+
+        $saveButton = $this->crawler->selectButton('Save');
+        $form = $saveButton->form(array(
+            'task[name]' => 'po danijeli',
+        ));
+        $this->client->submit($form);
+        $this->crawler = $this->client->followRedirect();
+
+
+        $this->assertNotContains(
+            'po duji',
+            $this->crawler->filter('#container')->text()
+        );
+
+        $this->assertContains(
+            'po danijeli',
             $this->crawler->filter('#container')->text()
         );
 

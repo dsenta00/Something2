@@ -12,12 +12,10 @@
                             <span id="messageError"></span>
                         </button>
                         <button>
-                            <a class="taskDeleteButton" href="{{ path('task_delete', {'id': task.id}) }}">Remove
-                                task</a>
+                            <a class="taskDeleteButton" href="{{ path('task_delete', {'id': task.id}) }}">Remove task</a>
                         </button>
                         <button>
-                            <a class="taskMarkAsDoneButton" href="{{ path('task_mark_as_done', {'id': task.id}) }}">Mark
-                                done</a>
+                            <a class="taskMarkAsDoneButton" href="{{ path('task_mark_as_done', {'id': task.id}) }}">Mark done</a>
                         </button>
                         <ul>
                             <li><span>Done:     </span><span id="doneStatus">{{ task.getDoneString }} </span></li>

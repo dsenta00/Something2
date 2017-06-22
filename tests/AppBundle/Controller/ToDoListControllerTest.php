@@ -44,7 +44,7 @@ class ToDoListControllerTest extends WebTestCase
      *
      * @param ObjectManager $manager
      */
-    public function deleteRecords(ObjectManager $manager)
+    private function deleteRecords(ObjectManager $manager)
     {
         $userRepository = $manager->getRepository('AppBundle:User');
         $users = $userRepository->findAll();
@@ -229,11 +229,6 @@ class ToDoListControllerTest extends WebTestCase
         );
 
         $this->loadFixtures($client);
-
-        $container = $client->getContainer();
-        $doctrine = $container->get('doctrine');
-        $toDoListRepository = $doctrine->getManager()->getRepository('AppBundle:ToDoList');
-        $list =  $toDoListRepository->findOneByName('moj mali dan kada je dani na poslu');
 
         $crawler = $client->request('GET', '/to-do-list/add');
         $response = $client->getResponse();
