@@ -2,9 +2,9 @@
 
 namespace Tests\AppBundle\Controller;
 
-use AppBundle\DataFixtures\ORM\LoadTaskData;
-use AppBundle\DataFixtures\ORM\LoadToDoListData;
-use AppBundle\DataFixtures\ORM\LoadUserData;
+use AppBundle\Entity\User;
+use Doctrine\Common\Persistence\ObjectManager;
+use SplStack;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -17,27 +17,73 @@ use Symfony\Bundle\FrameworkBundle\Client;
 class ToDoListControllerTest extends WebTestCase
 {
     /**
+     * @var SplStack
+     */
+    private $fixtures;
+
+    /**
+     * TaskControllerTest constructor.
+     */
+    public function __construct()
+    {
+        $this->fixtures = new SplStack();
+    }
+
+    /**
+     * Load fixture.
+     *
+     * @param ObjectManager $manager
+     * @param $className
+     */
+    private function loadFixture(ObjectManager $manager, $className)
+    {
+        $fixture = new $className($manager, static::$kernel->getContainer());
+        $fixture->load($manager);
+        $this->fixtures->push($fixture);
+    }
+
+    /**
      * Load fixtures.
      *
      * @param Client $client - the client.
      */
     private function loadFixtures(Client $client)
     {
+
         $container = $client->getContainer();
         $doctrine = $container->get('doctrine');
-        $entityManager = $doctrine->getManager();
+        $manager = $doctrine->getManager();
 
-        $fixture = new LoadUserData();
-        $fixture->setContainer(static::$kernel->getContainer());
-        $fixture->load($entityManager);
+        $this->deleteRecords($manager);
 
-        $fixture = new LoadToDoListData();
-        $fixture->setContainer(static::$kernel->getContainer());
-        $fixture->load($entityManager);
+        $this->loadFixture($manager, 'AppBundle\DataFixtures\ORM\LoadUserData');
+        $this->loadFixture($manager, 'AppBundle\DataFixtures\ORM\LoadToDoListData');
+        $this->loadFixture($manager, 'AppBundle\DataFixtures\ORM\LoadTaskData');
+    }
 
-        $fixture = new LoadTaskData();
-        $fixture->setContainer(static::$kernel->getContainer());
-        $fixture->load($entityManager);
+    public function deleteRecords(ObjectManager $manager)
+    {
+        $userRepository = $manager->getRepository('AppBundle:User');
+        $users = $userRepository->findAll();
+
+        foreach($users as $user){
+            if($user instanceof User){
+                $manager->remove($user);
+            }
+        }
+
+        $manager->flush();
+    }
+
+    /**
+     * Tear down.
+     */
+    public function tearDown()
+    {
+        while ($this->fixtures->count() > 0)
+        {
+            $this->fixtures->pop();
+        }
     }
 
     /**
@@ -58,7 +104,10 @@ class ToDoListControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/');
         $response = $client->getResponse();
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertContains('You don\'t have any lists yet.', $crawler->filter('#container')->text());
+        $this->assertContains(
+            'You don\'t have any lists yet.',
+            $crawler->filter('#container')->text()
+        );
     }
 
     /**
@@ -80,8 +129,15 @@ class ToDoListControllerTest extends WebTestCase
         $response = $client->getResponse();
         $this->assertSame(200, $response->getStatusCode());
 
-        $this->assertContains('moj mali dan kada je dani na poslu', $crawler->filter('#container')->text());
-        $this->assertContains('kakilica raspored', $crawler->filter('#container')->text());
+        $this->assertContains(
+            'moj mali dan kada je dani na poslu',
+            $crawler->filter('#container')->text()
+        );
+
+        $this->assertContains(
+            'kakilica raspored',
+            $crawler->filter('#container')->text()
+        );
     }
 
     /**
@@ -134,6 +190,9 @@ class ToDoListControllerTest extends WebTestCase
 
         $response = $client->getResponse();
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertContains('You don\'t have any lists yet.', $crawler->filter('#container')->text());
+        $this->assertContains(
+            'You don\'t have any lists yet.',
+            $crawler->filter('#container')->text()
+        );
     }
 }

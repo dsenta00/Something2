@@ -5,6 +5,7 @@ namespace AppBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use FOS\UserBundle\Model\UserManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
@@ -13,44 +14,41 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
  *
  * @package AppBundle\DataFixtures\ORM
  */
-class LoadUserData implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
+class LoadUserData extends LoadData
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
     /**
      * @var UserRepository
      */
     private $userRepository;
 
     /**
+     * LoadUserData constructor.
+     *
+     * @param ObjectManager $manager
      * @param ContainerInterface|null $container
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function __construct(ObjectManager $manager, ContainerInterface $container = null)
     {
-        $this->container = $container;
+        parent::__construct($manager, $container);
+
         $this->userRepository = $container
             ->get('doctrine.orm.default_entity_manager')
             ->getRepository('AppBundle:User');
-
     }
 
     /**
      * Store user into db.
      *
+     * @param UserManager $userManager
      * @param $userName
      * @param $password
      * @param $email
      */
-    private function addUser($userName, $password, $email)
+    private function addUser(UserManager $userManager, $userName, $password, $email)
     {
-        if ($this->userRepository->findOneByEmail($email)) {
+        if ($userManager->findUserByEmail($email)) {
             return;
         }
-
-        $userManager = $this->container->get('fos_user.user_manager');
 
         $user = $userManager->createUser();
         $user->setUsername($userName);
@@ -67,8 +65,10 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface, Ordered
      */
     public function load(ObjectManager $manager)
     {
-        $this->addUser('duje', 'duje', 'duje.duje@zeko.com');
-        $this->addUser('ćup', 'diridup', 'cup.diridup@zeko.com');
+        $userManager = $this->container->get('fos_user.user_manager');
+
+        $this->addUser($userManager, 'duje', 'duje', 'duje.duje@zeko.com');
+        $this->addUser($userManager, 'ćup', 'diridup', 'cup.diridup@zeko.com');
     }
 
     public function getOrder()
