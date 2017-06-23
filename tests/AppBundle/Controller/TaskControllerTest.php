@@ -259,12 +259,13 @@ class TaskControllerTest extends WebTestCase
         );
 
         $saveButton = $this->crawler->selectButton('Save');
-        $form = $saveButton->form(array(
-            'task[name]' => 'po danijeli',
-        ));
+        $form = $saveButton->form(
+            array(
+                'task[name]' => 'po danijeli',
+            )
+        );
         $this->client->submit($form);
         $this->crawler = $this->client->followRedirect();
-
 
         $this->assertNotContains(
             'po duji',
@@ -283,6 +284,92 @@ class TaskControllerTest extends WebTestCase
 
         $this->assertContains(
             'možda u svoj wc',
+            $this->crawler->filter('#container')->text()
+        );
+    }
+
+    /**
+     * Test New Action.
+     */
+    public function testNewAction()
+    {
+        $link = $this->crawler
+            ->filter('a:contains("View list tasks")')
+            ->eq(0)
+            ->link();
+
+        $this->crawler = $this->client->click($link);
+
+        $this->crawler = $this->client->request('GET', '/task/add/'.$this->getToDoListId('kakilica raspored'));
+        $response = $this->client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+
+        $this->assertContains(
+            'Name',
+            $this->crawler->filter('#task div label')->text()
+        );
+
+        $saveButton = $this->crawler->selectButton('Save');
+        $form = $saveButton->form(
+            array(
+                'task[name]' => 'po danijeli',
+                'task[priority]' => 0,
+                'task[deadline][day]' => 18,
+                'task[deadline][month]' => 3,
+                'task[deadline][year]' => 2017,
+            )
+        );
+
+        $this->client->submit($form);
+        $this->crawler = $this->client->followRedirect();
+
+        $this->assertContains(
+            'po duji',
+            $this->crawler->filter('#container')->text()
+        );
+
+        $this->assertContains(
+            'po danijeli',
+            $this->crawler->filter('#container')->text()
+        );
+
+        $this->assertContains(
+            'pored duje',
+            $this->crawler->filter('#container')->text()
+        );
+
+        $this->assertContains(
+            'možda u svoj wc',
+            $this->crawler->filter('#container')->text()
+        );
+    }
+
+    /**
+     * Test MarkAsDone Action.
+     */
+    public function testMarkAsDoneAction()
+    {
+        $link = $this->crawler
+            ->filter('a:contains("View list tasks")')
+            ->eq(0)
+            ->link();
+        $this->crawler = $this->client->click($link);
+
+        $this->crawler = $this->client->request('GET', '/task/mark-as-done/'.$this->getTaskId('možda u svoj wc'));
+        $response = $this->client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+
+        $this->assertNotContains(
+            'Done: No',
+            $this->crawler->text()
+        );
+
+        $this->crawler = $this->client->request('GET', '/?orderBy=name');
+        $response = $this->client->getResponse();
+        $this->assertSame(200, $response->getStatusCode());
+
+        $this->assertContains(
+            'Finished (%):  100 %',
             $this->crawler->filter('#container')->text()
         );
     }
