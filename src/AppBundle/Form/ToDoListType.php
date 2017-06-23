@@ -10,6 +10,7 @@ use AppBundle\Entity\ToDoList;
 
 /**
  * Class ToDoListType.
+ *
  * @package AppBundle\Form
  */
 class ToDoListType extends AbstractType

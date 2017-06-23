@@ -5,7 +5,8 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Class ToDoList
+ * Class ToDoList.
+ *
  * @package AppBundle\Entity
  */
 class ToDoList

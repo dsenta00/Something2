@@ -12,7 +12,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class User extends BaseUser
 {
+    /**
+     * @var int
+     */
     protected $id;
+
+    /**
+     * @var ArrayCollection
+     */
     private $toDoLists;
 
     /**

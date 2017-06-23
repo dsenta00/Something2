@@ -46,20 +46,19 @@
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script>
         $(document).ready(function () {
+
+            /**
+             * Delete task action.
+             */
             function deleteTask() {
-//              Ako se nesto selektira po klasi ide točka prije imena klase, a po id-u ide hešteg
-//              Nu primjer tu ispod odmah.
                 var $taskButton = $('.taskDeleteButton');
                 $taskButton.on('click', function (event) {
                     event.preventDefault();
-//                    $(this) - referenca na trenutno kliknuti botun
                     var url = $(this).attr('href');
                     var $button = $(this);
                     $.ajax({
                         url: url,
                         success: function (response) {
-//                            parent() - prvi roditelj trenutnog html elementa
-//                            ako pozovem dva puta parent() onda idem <a href> -> <button> -> <li>
                             $button.parent().parent().remove();
                         },
                         error: function (response) {
@@ -69,6 +68,9 @@
                 })
             }
 
+            /**
+             * Mark task as done function.
+             */
             function markTaskAsDone() {
                 var $taskButton = $('.taskMarkAsDoneButton');
                 $taskButton.on('click', function (event) {

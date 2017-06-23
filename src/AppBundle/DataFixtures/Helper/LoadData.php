@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace AppBundle\DataFixtures\Helper;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -55,7 +55,6 @@ abstract class LoadData implements FixtureInterface, ContainerAwareInterface, Or
     public function addRecord($function)
     {
         $record = $function();
-
         $this->manager->persist($record);
         $this->manager->flush();
     }

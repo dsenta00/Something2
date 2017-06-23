@@ -7,7 +7,8 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 
 /**
- * Class ToDoListRepository
+ * Class ToDoListRepository.
+ *
  * @package AppBundle\Repository
  */
 class ToDoListRepository extends EntityRepository
@@ -43,6 +44,7 @@ class ToDoListRepository extends EntityRepository
             ->select('tdl')
             ->from('AppBundle:ToDoList', 'tdl')
             ->where('tdl.user = '.$userId);
+
         if ($orderBy) {
             $qb->orderBy('tdl.'.$orderBy, 'ASC');
         }

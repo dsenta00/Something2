@@ -8,6 +8,7 @@ use AppBundle\Repository\ToDoListRepository;
 use AppBundle\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use AppBundle\DataFixtures\Helper\LoadData;
 
 /**
  * Class LoadToDoListData

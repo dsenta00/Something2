@@ -6,11 +6,11 @@
 
     <entity name="AppBundle\Entity\Task" table="task" repository-class="AppBundle\Repository\TaskRepository">
         <id name="id" type="integer">
-            <generator strategy="AUTO" />
+            <generator strategy="AUTO"/>
         </id>
-        <field name="name" type="string" length="100" />
-        <field name="priority" type="integer" />
-        <field name="deadline" type="datetime" />
+        <field name="name" type="string" length="100"/>
+        <field name="priority" type="integer"/>
+        <field name="deadline" type="datetime"/>
         <field name="done" type="boolean"/>
         <many-to-one field="toDoList" target-entity="AppBundle\Entity\ToDoList" inversed-by="tasks">
             <join-column name="toDoList" referenced-column-name="id" unique="false"/>

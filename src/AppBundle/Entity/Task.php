@@ -2,10 +2,9 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Helper\TaskHelper;
-
 /**
- * Class Task
+ * Class Task.
+ *
  * @package AppBundle\Entity
  */
 class Task

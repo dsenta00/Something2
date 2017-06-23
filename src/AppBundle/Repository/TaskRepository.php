@@ -7,7 +7,8 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 
 /**
- * Class TaskRepository
+ * Class TaskRepository.
+ *
  * @package AppBundle\Repository
  */
 class TaskRepository extends EntityRepository
@@ -63,6 +64,7 @@ class TaskRepository extends EntityRepository
             ->select('t')
             ->from('AppBundle:Task', 't')
             ->where('t.toDoList = '.$listId);
+
         if ($orderBy) {
             $qb->orderBy('t.'.$orderBy, 'ASC');
         }

@@ -8,9 +8,11 @@ use AppBundle\Repository\TaskRepository;
 use AppBundle\Repository\ToDoListRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use AppBundle\DataFixtures\Helper\LoadData;
 
 /**
- * Class LoadTaskData
+ * Class LoadTaskData.
+ *
  * @package AppBundle\DataFixtures\ORM
  */
 class LoadTaskData extends LoadData

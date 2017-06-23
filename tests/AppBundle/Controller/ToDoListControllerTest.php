@@ -10,7 +10,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 
-
 /**
  * Class ToDoListControllerTest.
  *
@@ -49,8 +48,8 @@ class ToDoListControllerTest extends WebTestCase
         $userRepository = $manager->getRepository('AppBundle:User');
         $users = $userRepository->findAll();
 
-        foreach($users as $user){
-            if($user instanceof User){
+        foreach ($users as $user) {
+            if ($user instanceof User) {
                 $manager->remove($user);
             }
         }
@@ -186,7 +185,7 @@ class ToDoListControllerTest extends WebTestCase
         $container = $client->getContainer();
         $doctrine = $container->get('doctrine');
         $toDoListRepository = $doctrine->getManager()->getRepository('AppBundle:ToDoList');
-        $list =  $toDoListRepository->findOneByName('moj mali dan kada je dani na poslu');
+        $list = $toDoListRepository->findOneByName('moj mali dan kada je dani na poslu');
 
         $crawler = $client->request('GET', '/to-do-list/update/'.$list->getId());
         $response = $client->getResponse();
@@ -198,9 +197,11 @@ class ToDoListControllerTest extends WebTestCase
         );
 
         $saveButton = $crawler->selectButton('Save');
-        $form = $saveButton->form(array(
-            'to_do_list[name]' => 'moja mala večer kada se dani vrati s posla',
-        ));
+        $form = $saveButton->form(
+            array(
+                'to_do_list[name]' => 'moja mala večer kada se dani vrati s posla',
+            )
+        );
         $client->submit($form);
         $crawler = $client->followRedirect();
 
@@ -240,9 +241,11 @@ class ToDoListControllerTest extends WebTestCase
         );
 
         $saveButton = $crawler->selectButton('Save');
-        $form = $saveButton->form(array(
-            'to_do_list[name]' => 'moja mala večer kada se dani vrati s posla',
-        ));
+        $form = $saveButton->form(
+            array(
+                'to_do_list[name]' => 'moja mala večer kada se dani vrati s posla',
+            )
+        );
         $client->submit($form);
         $crawler = $client->followRedirect();
 

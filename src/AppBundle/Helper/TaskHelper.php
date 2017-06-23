@@ -5,7 +5,8 @@ namespace AppBundle\Helper;
 use DateTime;
 
 /**
- * Class TaskHelper
+ * Class TaskHelper.
+ *
  * @package AppBundle\Helper.
  */
 class TaskHelper

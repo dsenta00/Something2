@@ -6,7 +6,8 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 
 /**
- * Class UserRepository
+ * Class UserRepository.
+ *
  * @package AppBundle\Repository
  */
 class UserRepository extends EntityRepository

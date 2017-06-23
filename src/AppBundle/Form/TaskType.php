@@ -12,6 +12,7 @@ use AppBundle\Entity\Task;
 
 /**
  * Class TaskType.
+ *
  * @package AppBundle\Form
  */
 class TaskType extends AbstractType

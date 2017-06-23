@@ -27,11 +27,8 @@ class TaskController extends Controller
     public function indexAction(Request $request, $listId)
     {
         $orderBy = $request->get('orderBy');
-
         $em = $this->getDoctrine()->getManager();
-
         $taskRepository = $em->getRepository('AppBundle:Task');
-
         $tasks = $taskRepository->getAllTasksOrderedBy($listId, $orderBy);
 
         $list = $em

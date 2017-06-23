@@ -6,6 +6,7 @@ use AppBundle\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use AppBundle\DataFixtures\Helper\LoadData;
 
 /**
  * Class LoadUserData.
@@ -65,6 +66,11 @@ class LoadUserData extends LoadData
         $this->addUser($userManager, 'ćup', 'diridup', 'cup.diridup@zeko.com');
     }
 
+    /**
+     * Get order.
+     *
+     * @return int
+     */
     public function getOrder()
     {
         return 1;
