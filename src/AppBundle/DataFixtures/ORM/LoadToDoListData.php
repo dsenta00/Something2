@@ -58,7 +58,6 @@ class LoadToDoListData extends LoadData
             $toDoList = new ToDoList();
             $toDoList->setName('moj mali dan kada je dani na poslu');
             $toDoList->setUser($user);
-            $toDoList->setCreatedAt(new \DateTime('2000-01-01'));
             return $toDoList;
         });
 
@@ -66,7 +65,6 @@ class LoadToDoListData extends LoadData
             $toDoList = new ToDoList();
             $toDoList->setName('kakilica raspored');
             $toDoList->setUser($user);
-            $toDoList->setCreatedAt(new \DateTime('2000-01-01'));
             return $toDoList;
         });
     }

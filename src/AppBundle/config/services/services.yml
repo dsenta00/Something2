@@ -1,0 +1,20 @@
+services:
+
+    # extensions
+    to_do_list_extension:
+        class: AppBundle\Twig\ToDoListExtension
+        public: false
+        tags: ['twig.extension']
+
+    # repositories
+    to_do_list_repository:
+        class: AppBundle\Repository\ToDoListRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\ToDoList
+
+    task_repository:
+        class: AppBundle\Repository\TaskRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\Task

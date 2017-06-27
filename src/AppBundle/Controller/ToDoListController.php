@@ -26,20 +26,15 @@ class ToDoListController extends Controller
     {
         $orderBy = $request->get('orderBy');
         $user = $this->getUser();
+        $lists = $this->get('to_do_list_repository')
+            ->getAllUserListsOrderedBy($user->getId(), $orderBy);
 
-        $listRepository = $this->container->get('doctrine.orm.entity_manager')
-            ->getRepository('AppBundle:ToDoList');
-
-        $lists = $listRepository->getAllUserListsOrderedBy($user->getId(), $orderBy);
-
-        $taskRepository = $this->container
-            ->get('doctrine.orm.entity_manager')
-            ->getRepository('AppBundle:Task');
+        $taskRepository = $this->get('task_repository');
 
         foreach ($lists as $list) {
-            $list->countFinished = $taskRepository->getNumberOfFinishedTasksInAList($list->getId());
+            $list->setNumFinishedTasks($taskRepository->getNumberOfFinishedTasksInAList($list->getId()));
             if (count($list->getTasks()) != 0) {
-                $list->percentageDone = 100 * (round(($list->countFinished / count($list->getTasks())), 2));
+                $list->setPercentageDone(100 * (round(($list->getNumFinishedTasks() / count($list->getTasks())), 2)));
             }
         }
 
@@ -56,16 +51,15 @@ class ToDoListController extends Controller
     {
         $list = new ToDoList();
         $form = $this->createForm(ToDoListType::class, $list);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $list = $form->getData();
             $list->setUser($this->getUser());
-            $list->setCreatedAt(new DateTime("now"));
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($list);
-            $em->flush();
+
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($list);
+            $manager->flush();
 
             return $this->redirectToRoute('to_do_lists');
         }
@@ -82,19 +76,16 @@ class ToDoListController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $listRepository = $this->container->get('doctrine.orm.entity_manager')
-            ->getRepository('AppBundle:ToDoList');
-
-        $list = $listRepository->findOneById($id);
+        $list = $this->get('to_do_list_repository')->findOneById($id);
         $form = $this->createForm(ToDoListType::class, $list);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $list = $form->getData();
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($list);
-            $em->flush();
+
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($list);
+            $manager->flush();
 
             return $this->redirectToRoute('to_do_lists');
         }
@@ -111,20 +102,17 @@ class ToDoListController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $em = $this->container->get('doctrine.orm.entity_manager');
-
-        $listRepository = $em->getRepository('AppBundle:ToDoList');
-
         try {
-            $list = $listRepository->findOneById($id);
+            $list = $this->get('to_do_list_repository')->findOneById($id);
             $name = $list->getName();
-            $em->remove($list);
-            $em->flush();
+
+            $manager =$this->getDoctrine()->getManager();
+            $manager->remove($list);
+            $manager->flush();
 
             return new Response("List with name ".$name." is erased");
         } catch (Exception $e) {
             return new Response("Oooops something went wrong! :P", -1);
         }
-
     }
 }

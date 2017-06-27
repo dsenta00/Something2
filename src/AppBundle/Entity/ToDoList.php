@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Timestampable\Traits\Timestampable;
 
 /**
  * Class ToDoList.
@@ -11,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class ToDoList
 {
+    use Timestampable;
     /**
      * @var int
      */
@@ -39,12 +41,12 @@ class ToDoList
     /**
      * @var int
      */
-    public $countFinished = 0;
+    protected $numFinishedTasks = 0;
 
     /**
      * @var int
      */
-    public $percentageDone = 0;
+    protected $percentageDone = 0;
 
     /**
      * ToDoList constructor.
@@ -52,6 +54,46 @@ class ToDoList
     function __construct()
     {
         $this->tasks = new ArrayCollection();
+    }
+
+    /**
+     * Get percentage done.
+     *
+     * @return int
+     */
+    public function getPercentageDone()
+    {
+        return $this->percentageDone;
+    }
+
+    /**
+     * Set percentage done.
+     *
+     * @param $percentageDone
+     */
+    public function setPercentageDone($percentageDone)
+    {
+        $this->percentageDone = $percentageDone;
+    }
+
+    /**
+     * Get number of finished tasks.
+     *
+     * @return int
+     */
+    public function getNumFinishedTasks()
+    {
+        return $this->numFinishedTasks;
+    }
+
+    /**
+     * Set percentage done.
+     *
+     * @param $percentageDone
+     */
+    public function setNumFinishedTasks($numFinishedTasks)
+    {
+        $this->numFinishedTasks = $numFinishedTasks;
     }
 
     /**
@@ -91,11 +133,11 @@ class ToDoList
     /**
      * Add task
      *
-     * @param \AppBundle\Entity\Task $task
+     * @param Task $task
      *
      * @return ToDoList
      */
-    public function addTask(\AppBundle\Entity\Task $task)
+    public function addTask(Task $task)
     {
         $this->tasks[] = $task;
 
@@ -105,9 +147,9 @@ class ToDoList
     /**
      * Remove task
      *
-     * @param \AppBundle\Entity\Task $task
+     * @param Task $task
      */
-    public function removeTask(\AppBundle\Entity\Task $task)
+    public function removeTask(Task $task)
     {
         $this->tasks->removeElement($task);
     }
@@ -123,13 +165,13 @@ class ToDoList
     }
 
     /**
-     * Set userId
+     * Set user.
      *
-     * @param \AppBundle\Entity\User $user
+     * @param User $user
      *
      * @return ToDoList
      */
-    public function setUser(\AppBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -137,13 +179,23 @@ class ToDoList
     }
 
     /**
-     * Get userId
+     * Get user.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**
@@ -158,15 +210,5 @@ class ToDoList
         $this->createdAt = $createdAt;
 
         return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
     }
 }

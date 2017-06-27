@@ -20,8 +20,8 @@
                         <ul>
                             <li> <span>Created At: </span> {{list.createdAt|date("m/d/Y")}} </li>
                             <li> <span>Number of tasks: </span> {{list.tasks|length}} </li>
-                            <li> <span>Number of finished tasks: </span> {{list.countFinished}} </li>
-                            <li> <span>Finished (%): </span> {{list.percentageDone}} % </li>
+                            <li> <span>Number of finished tasks: </span> {{list|num_finished_tasks}} </li>
+                            <li> <span>Finished (%): </span> {{ list|percentage_done}} % </li>
                         </ul>
                     </li>
                 {% else %}

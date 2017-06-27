@@ -6,6 +6,8 @@ use AppBundle\DataFixtures\ORM\LoadTaskData;
 use AppBundle\DataFixtures\ORM\LoadToDoListData;
 use AppBundle\DataFixtures\ORM\LoadUserData;
 use AppBundle\Entity\User;
+use AppBundle\Repository\TaskRepository;
+use AppBundle\Repository\ToDoListRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -29,6 +31,16 @@ class TaskControllerTest extends WebTestCase
     private $client;
 
     /**
+     * @var TaskRepository
+     */
+    private $taskRepository;
+
+    /**
+     * @var ToDoListRepository
+     */
+    private $toDoListRepository;
+
+    /**
      * Delete records.
      *
      * @param ObjectManager $manager
@@ -45,38 +57,6 @@ class TaskControllerTest extends WebTestCase
         }
 
         $manager->flush();
-    }
-
-    /**
-     * Get ToDoList id.
-     *
-     * @param string $name
-     * @return int list ID if exist otherwise return null.
-     */
-    private function getToDoListId(string $name)
-    {
-        $container = $this->client->getContainer();
-        $doctrine = $container->get('doctrine');
-        $toDoListRepository = $doctrine->getManager()->getRepository('AppBundle:ToDoList');
-        $list = $toDoListRepository->findOneByName($name);
-
-        return ($list) ? $list->getId() : -1;
-    }
-
-    /**
-     * Get Task id.
-     *
-     * @param string $name
-     * @return int
-     */
-    private function getTaskId(string $name)
-    {
-        $container = $this->client->getContainer();
-        $doctrine = $container->get('doctrine');
-        $toDoListRepository = $doctrine->getManager()->getRepository('AppBundle:Task');
-        $task = $toDoListRepository->findOneByName($name);
-
-        return ($task) ? $task->getId() : -1;
     }
 
     /**
@@ -104,6 +84,9 @@ class TaskControllerTest extends WebTestCase
         $fixture->load($manager);
         $fixture = new LoadTaskData($manager, static::$kernel->getContainer());
         $fixture->load($manager);
+
+        $this->toDoListRepository = $manager->getRepository('AppBundle:ToDoList');
+        $this->taskRepository = $manager->getRepository('AppBundle:Task');
 
         $this->crawler = $this->client->request('GET', '/?orderBy=name');
     }
@@ -177,7 +160,10 @@ class TaskControllerTest extends WebTestCase
             ->link();
 
         $this->client->click($link);
-        $this->crawler = $this->client->request('GET', '/tasks/'.$this->getToDoListId('kakilica raspored'));
+        $this->crawler = $this->client->request(
+            'GET',
+            '/tasks/'.$this->toDoListRepository->findOneByName('kakilica raspored')->getId()
+        );
         $response = $this->client->getResponse();
         $this->assertSame(200, $response->getStatusCode());
 
@@ -202,7 +188,10 @@ class TaskControllerTest extends WebTestCase
             ->link();
 
         $this->client->click($link);
-        $this->crawler = $this->client->request('GET', '/tasks/'.$this->getToDoListId('kakilica raspored'));
+        $this->crawler = $this->client->request(
+            'GET',
+            '/tasks/'.$this->toDoListRepository->findOneByName('kakilica raspored')->getId()
+        );
         $response = $this->client->getResponse();
         $this->assertSame(200, $response->getStatusCode());
 
@@ -227,7 +216,10 @@ class TaskControllerTest extends WebTestCase
             ->link();
 
         $this->client->click($link);
-        $this->crawler = $this->client->request('GET', '/tasks/'.$this->getToDoListId('kakilica raspored'));
+        $this->crawler = $this->client->request(
+            'GET',
+            '/tasks/'.$this->toDoListRepository->findOneByName('kakilica raspored')->getId()
+        );
         $response = $this->client->getResponse();
         $this->assertSame(200, $response->getStatusCode());
 
@@ -249,7 +241,10 @@ class TaskControllerTest extends WebTestCase
 
         $this->crawler = $this->client->click($link);
 
-        $this->crawler = $this->client->request('GET', '/task/update/'.$this->getTaskId('po duji'));
+        $this->crawler = $this->client->request(
+            'GET',
+            '/task/update/'.$this->taskRepository->findOneByName('po duji')->getId()
+        );
         $response = $this->client->getResponse();
         $this->assertSame(200, $response->getStatusCode());
 
@@ -300,7 +295,10 @@ class TaskControllerTest extends WebTestCase
 
         $this->crawler = $this->client->click($link);
 
-        $this->crawler = $this->client->request('GET', '/task/add/'.$this->getToDoListId('kakilica raspored'));
+        $this->crawler = $this->client->request(
+            'GET',
+            '/task/add/'.$this->toDoListRepository->findOneByName('kakilica raspored')->getId()
+        );
         $response = $this->client->getResponse();
         $this->assertSame(200, $response->getStatusCode());
 
@@ -355,7 +353,10 @@ class TaskControllerTest extends WebTestCase
             ->link();
         $this->crawler = $this->client->click($link);
 
-        $this->crawler = $this->client->request('GET', '/task/mark-as-done/'.$this->getTaskId('možda u svoj wc'));
+        $this->crawler = $this->client->request(
+            'GET',
+            '/task/mark-as-done/'.$this->taskRepository->findOneByName('možda u svoj wc')->getId()
+        );
         $response = $this->client->getResponse();
         $this->assertSame(200, $response->getStatusCode());
 
