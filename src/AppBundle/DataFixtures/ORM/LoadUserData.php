@@ -56,17 +56,6 @@ class LoadUserData extends LoadData
     }
 
     /**
-     * @param ObjectManager $manager
-     */
-    public function load(ObjectManager $manager)
-    {
-        $userManager = $this->container->get('fos_user.user_manager');
-
-        $this->addUser($userManager, 'duje', 'duje', 'duje.duje@zeko.com');
-        $this->addUser($userManager, 'ćup', 'diridup', 'cup.diridup@zeko.com');
-    }
-
-    /**
      * Get order.
      *
      * @return int
@@ -74,5 +63,16 @@ class LoadUserData extends LoadData
     public function getOrder()
     {
         return 1;
+    }
+
+    /**
+     * Load fixtures into.
+     */
+    public function execute()
+    {
+        $userManager = $this->container->get('fos_user.user_manager');
+
+        $this->addUser($userManager, 'duje', 'duje', 'duje.duje@zeko.com');
+        $this->addUser($userManager, 'ćup', 'diridup', 'cup.diridup@zeko.com');
     }
 }

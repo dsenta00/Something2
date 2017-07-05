@@ -60,6 +60,18 @@ class TaskControllerTest extends WebTestCase
     }
 
     /**
+     * Load fixture.
+     *
+     * @param $fixtureType string - fixture class type
+     * @param $manager ObjectManager - object manager.
+     */
+    private function loadFixture($fixtureType, $manager)
+    {
+        $fixture = new $fixtureType($manager, static::$kernel->getContainer());
+        $fixture->execute();
+    }
+
+    /**
      * Prerequisite for test.
      */
     public function setUp()
@@ -78,12 +90,9 @@ class TaskControllerTest extends WebTestCase
 
         $this->deleteRecords($manager);
 
-        $fixture = new LoadUserData($manager, static::$kernel->getContainer());
-        $fixture->load($manager);
-        $fixture = new LoadToDoListData($manager, static::$kernel->getContainer());
-        $fixture->load($manager);
-        $fixture = new LoadTaskData($manager, static::$kernel->getContainer());
-        $fixture->load($manager);
+        $this->loadFixture(LoadUserData::class, $manager);
+        $this->loadFixture(LoadToDoListData::class, $manager);
+        $this->loadFixture(LoadTaskData::class, $manager);
 
         $this->toDoListRepository = $manager->getRepository('AppBundle:ToDoList');
         $this->taskRepository = $manager->getRepository('AppBundle:Task');

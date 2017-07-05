@@ -18,6 +18,18 @@ use Symfony\Bundle\FrameworkBundle\Client;
 class ToDoListControllerTest extends WebTestCase
 {
     /**
+     * Load fixture.
+     *
+     * @param $fixtureType
+     * @param $manager ObjectManager - object manager.
+     */
+    private function loadFixture($fixtureType, $manager)
+    {
+        $fixture = new $fixtureType($manager, static::$kernel->getContainer());
+        $fixture->execute();
+    }
+
+    /**
      * Load fixtures.
      *
      * @param Client $client - the client.
@@ -30,12 +42,9 @@ class ToDoListControllerTest extends WebTestCase
 
         $this->deleteRecords($manager);
 
-        $fixture = new LoadUserData($manager, static::$kernel->getContainer());
-        $fixture->load($manager);
-        $fixture = new LoadToDoListData($manager, static::$kernel->getContainer());
-        $fixture->load($manager);
-        $fixture = new LoadTaskData($manager, static::$kernel->getContainer());
-        $fixture->load($manager);
+        $this->loadFixture(LoadUserData::class, $manager);
+        $this->loadFixture(LoadToDoListData::class, $manager);
+        $this->loadFixture(LoadTaskData::class, $manager);
     }
 
     /**

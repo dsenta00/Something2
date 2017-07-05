@@ -1,10 +1,7 @@
 services:
 
     # extensions
-    to_do_list_extension:
-        class: AppBundle\Twig\ToDoListExtension
-        public: false
-        tags: ['twig.extension']
+
 
     # repositories
     to_do_list_repository:

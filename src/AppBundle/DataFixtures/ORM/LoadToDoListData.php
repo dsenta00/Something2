@@ -3,7 +3,6 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\ToDoList;
-use AppBundle\Entity\User;
 use AppBundle\Repository\ToDoListRepository;
 use AppBundle\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -47,10 +46,8 @@ class LoadToDoListData extends LoadData
 
     /**
      * Load ToDoList data.
-     *
-     * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function execute()
     {
         $user = $this->userRepository->findOneByEmail('cup.diridup@zeko.com');
 

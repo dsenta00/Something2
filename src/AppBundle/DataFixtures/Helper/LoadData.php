@@ -58,4 +58,18 @@ abstract class LoadData implements FixtureInterface, ContainerAwareInterface, Or
         $this->manager->persist($record);
         $this->manager->flush();
     }
+
+    /**
+     * Load fixtures into.
+     */
+    public abstract function execute();
+
+    /**
+     * Dummy.
+     *
+     * @param ObjectManager $manager
+     */
+    public function load(ObjectManager $manager)
+    {
+    }
 }

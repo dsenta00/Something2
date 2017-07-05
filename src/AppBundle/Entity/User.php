@@ -42,11 +42,11 @@ class User extends BaseUser
     /**
      * Add toDoList
      *
-     * @param \AppBundle\Entity\ToDoList $toDoList
+     * @param ToDoList $toDoList
      *
      * @return User
      */
-    public function addToDoList(\AppBundle\Entity\ToDoList $toDoList)
+    public function addToDoList(ToDoList $toDoList)
     {
         $this->toDoLists[] = $toDoList;
 
@@ -56,9 +56,9 @@ class User extends BaseUser
     /**
      * Remove toDoList
      *
-     * @param \AppBundle\Entity\ToDoList $toDoList
+     * @param ToDoList $toDoList
      */
-    public function removeToDoList(\AppBundle\Entity\ToDoList $toDoList)
+    public function removeToDoList(ToDoList $toDoList)
     {
         $this->toDoLists->removeElement($toDoList);
     }
@@ -66,7 +66,7 @@ class User extends BaseUser
     /**
      * Get toDoLists
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getToDoLists()
     {

@@ -48,9 +48,8 @@ class LoadTaskData extends LoadData
 
     /**
      * Load Task data.
-     * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function execute()
     {
         $toDoList = $this->toDoListRepository->findOneByName('kakilica raspored');
 
